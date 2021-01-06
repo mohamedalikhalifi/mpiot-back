@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   lastName: {type: String ,requied:true},
   access: {type: Boolean},
   dateCreated: {type: String},
-  images:{type: [String], requied:true}
+  imagePath:{type:String,requied:true}
 })
 
 
