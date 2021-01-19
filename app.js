@@ -3,6 +3,7 @@ const path = require("path")
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users")
+const uploadsRoutes = require("./routes/uploads")
 
 const app = express();
 mongoose
@@ -16,9 +17,10 @@ mongoose
         console.log("connection to database failed");
     });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit:'50mb'}));
+app.use(bodyParser.urlencoded({limit:'50mb',  extended: true }));
 app.use("/images",express.static(path.join("storage/images")))
+app.use("/uploads",express.static(path.join("uploads")))
 
 
 app.use((req, res, next) => {
@@ -35,5 +37,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users",usersRoutes);
+app.use("/api/uploads",uploadsRoutes);
 
 module.exports = app;
