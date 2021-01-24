@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-  firstName: {type:String , requied: true},
-  lastName: {type: String ,requied:true},
+  firstName: {type:String , required: true},
+  lastName: {type: String ,required:true},
   access: {type: Boolean},
   dateCreated: {type: String},
-  imagePath:{type:String,requied:true}
+  imagePath:{type:String,required:true}
 })
 
 

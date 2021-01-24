@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users")
 const uploadsRoutes = require("./routes/uploads")
+const eventsRoutes = require("./routes/events")
 
 const app = express();
 mongoose
@@ -20,7 +21,7 @@ mongoose
 app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({limit:'50mb',  extended: true }));
 app.use("/images",express.static(path.join("storage/images")))
-app.use("/uploads",express.static(path.join("uploads")))
+app.use("/uploads",express.static(path.join("../uploads")))
 
 
 app.use((req, res, next) => {
@@ -38,5 +39,6 @@ app.use((req, res, next) => {
 
 app.use("/api/users",usersRoutes);
 app.use("/api/uploads",uploadsRoutes);
+app.use("/api/events",eventsRoutes);
 
 module.exports = app;
