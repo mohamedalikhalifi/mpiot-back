@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users")
 const uploadsRoutes = require("./routes/uploads")
 const eventsRoutes = require("./routes/events")
+const cors = require('cors')
 
 const app = express();
 mongoose
@@ -19,11 +20,11 @@ mongoose
     });
 
 app.use(bodyParser.json({limit:'50mb'}));
-app.use(bodyParser.urlencoded({limit:'50mb',  extended: true }));
-app.use("/images",express.static(path.join("storage/images")))
-app.use("/uploads",express.static(path.join("../uploads")))
+app.use(bodyParser.urlencoded({limit:'50mb',  extended: false }));
+app.use("/images",express.static(path.join("storage/profile-images")))
+app.use("/uploads",express.static(path.join("uploads")))
 
-
+app.use(cors());
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(

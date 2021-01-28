@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
         if (isValid = MYME_TYPE_MAP[file.mimetype]){
             error = null
         }
-        cb(error, "storage/images")
+        cb(error, "storage/profile-images")
     },
     filename: (res, file, cb) => {
         const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -25,7 +25,6 @@ const storage = multer.diskStorage({
 })
 
 router.post("", multer({storage:storage}).single("image"), (req, res, next) => {
-    const url=req.protocol + '://' + req.get("host");
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,

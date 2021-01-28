@@ -4,6 +4,11 @@ const User = require("../models/user")
 const multer = require('multer')
 const fs = require('fs');
 const { path } = require("../app");
+const redis = require("redis");
+const redisConfig = require("../config/redis");
+const { Console } = require("console");
+
+const client = redis.createClient(redisConfig);
 
 const MYME_TYPE_MAP = {
   'image/png': 'png',
@@ -14,7 +19,7 @@ const MYME_TYPE_MAP = {
 var index = 1;
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-
+    console.log("saving uploads")
     var error = new Error("Invalid mime type!");
     if (isValid = MYME_TYPE_MAP[file.mimetype]) {
       error = null
@@ -41,12 +46,17 @@ uploadsRouter.post('/:id', (req, res, next) => { index = 1; next() }, upload.arr
     return next(error)
   }
   files.forEach(function (file) {
-    const url=req.protocol + '://' + req.get("host");
-    file.path = url +'/'+ file.path;
+    const url = req.protocol + '://' + req.get("host");
+    file.path = url + '/' + file.path;
     console.log(file.path);
   });
-  console.log(files);
-  res.send({ status: 'ok' ,data: files});
+  res.send({ status: 'ok', data: files });
+  next();
+}, () => {
+  console.log("Uploads ReceivedNewData")
+  client.publish("Uploads", "ReceivedNewData", function () {
+    console.log("Message Published");
+  })
 })
 
 module.exports = uploadsRouter;

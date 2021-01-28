@@ -1,9 +1,10 @@
 const app = require("./app");
 const debug = require("debug")("node-angular");
 const http = require("http");
-const localtunnel = require('localtunnel')
+const localtunnel = require('localtunnel');
 
 
+global.url="";
 const normalizePort = val => {
   var port = parseInt(val, 10);
 
@@ -38,6 +39,15 @@ const onError = error => {
       throw error;
   }
 };
+
+
+(async () => {
+  const tunnel = await localtunnel({ port: 3000,subdomain:"mpiot" });
+  url = tunnel.url;
+  console.log(tunnel.url);
+  tunnel.on('close', () => {
+  });
+})();
 
 const onListening = () => {
   const addr = server.address();

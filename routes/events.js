@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const eventsRouter = express.Router();
 const Event = require("../models/event")
 const User = require("../models/user")
 const mqtt = require("mqtt")
@@ -54,7 +54,7 @@ client.on('message', (topic, message) => {
     }
 })
 
-router.get("", (req, res, next) => {
+eventsRouter.get("", (req, res, next) => {
     Event.find().then((documents) => {
         console.log(documents);
         res.status(200).json({
@@ -64,11 +64,11 @@ router.get("", (req, res, next) => {
     });
 });
 
-router.delete("", (req, res, next) => {
+eventsRouter.delete("", (req, res, next) => {
     Event.deleteMany({}).then(result => {
         console.log(result);
         res.status(200).json({ message: "Events deleted!" })
     });
 });
 
-module.exports = router;
+module.exports = eventsRouter;
