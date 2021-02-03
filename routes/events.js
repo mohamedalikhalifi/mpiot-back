@@ -10,10 +10,13 @@ const client = mqtt.connect('mqtt://broker.hivemq.com')
 
 function storeEventMessage(message) {
     let event;
-    User.findById(message).then((user)=>{
+    let id;
+    try{id = mongoose.Types.ObjectId(message)}
+    catch{}
+    User.findById(id).then((user)=>{
         if(user){
             event = new Event({
-                userId: message,
+                userId: id,
                 firstName:user.firstName,
                 lastName:user.lastName,
                 access:user.access,
@@ -29,6 +32,7 @@ function storeEventMessage(message) {
                 date: new Date().toUTCString()
             })
         }
+        event.save();
     })
     .catch(err => {
         event = new Event({
